@@ -7,6 +7,7 @@ package;
 @:final
 class ForBahri 
 {
+	//bahri burayı sil
 	public static inline var playerXAcc = 5;
 	public static inline var playerMaxVelX = 280;
 	public static inline var playerMaxVelY = 500;
