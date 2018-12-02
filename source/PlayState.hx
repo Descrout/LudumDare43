@@ -49,10 +49,10 @@ class PlayState extends FlxState
 		tileMap = map.loadTilemap(AssetPaths.tiles__png, 32, 32, "walls");
 		add(tileMap);
 		
-		var numPlayerBullets:Int = 6;
-		bullets = new FlxTypedGroup<Bullet>(numPlayerBullets);
+
+		bullets = new FlxTypedGroup<Bullet>(ForBahri.maxBullet);
 		var bulletHolder:Bullet;
-		for (i in 0...numPlayerBullets)
+		for (i in 0...ForBahri.maxBullet)
 		{
 			bulletHolder = new Bullet();
 			bullets.add(bulletHolder);

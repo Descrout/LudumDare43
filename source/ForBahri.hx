@@ -14,6 +14,7 @@ class ForBahri
 	public static inline var playerGravity = 980;
 	public static inline var playerFireRate = 1 / 10;
 	
+	public static inline var maxBullet = 6;
 	public static inline var playerBulletSpeed = 800;
 	public static inline var playerBulletDamage = 1;
 	
