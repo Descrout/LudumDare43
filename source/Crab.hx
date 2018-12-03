@@ -23,6 +23,7 @@ class Crab extends FlxSprite
 	private var damage:Float;
 	private var tileMap:FlxTilemap;
 	private var knockback:Int;
+	public var rageAmount:Int;
 	
 	public function new(X:Int, Y:Int, P:Player, TileMap:FlxTilemap) 
 	{
@@ -36,6 +37,7 @@ class Crab extends FlxSprite
 		
 		direction = 0;
 		health = ForBahri.crabHP;
+		rageAmount = ForBahri.crabRageAmount;
 		speed = FlxG.random.int(5, 10);
 		timer = 0;
 		changeTime = FlxG.random.float(1, 4);
@@ -87,6 +89,11 @@ class Crab extends FlxSprite
 		}
 		
 		
+	}
+	
+	override public function kill():Void{
+		player.rage += rageAmount;
+		super.kill();
 	}
 	
 	public function attack():Void

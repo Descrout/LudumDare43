@@ -16,7 +16,7 @@ class PlayState extends FlxState
 	
 	public var bullets:FlxTypedGroup<Bullet>;
 	public var cages:FlxTypedGroup<BirdCage>;
-	public var birds:FlxTypedGroup<Bird>;
+	public var lights:FlxTypedGroup<Light>;
 	private var crabs:FlxTypedGroup<Crab>;
 	private var platforms:FlxTypedGroup<Platform>;
 
@@ -63,9 +63,9 @@ class PlayState extends FlxState
 		
 		map = new FlxOgmoLoader(Main.levels[Main.currentLevel]);
 		
-		tileMap = map.loadTilemap(AssetPaths.tiles__png, 32, 32, "walls");
-		tileMap.setTileProperties(39, FlxObject.NONE, stairCallBack, Player);
-		//tileMap.setTileProperties(46, FlxObject.UP);
+		tileMap = map.loadTilemap(AssetPaths.tileset__png, 32, 32, "walls");
+		tileMap.setTileProperties(7, FlxObject.NONE, stairCallBack, Player);
+		tileMap.setTileProperties(13, FlxObject.NONE);
 		add(tileMap);
 		
 
@@ -79,20 +79,24 @@ class PlayState extends FlxState
 		
 		player = new Player(this);
 		add(player);
-		add(player.gun);
+		add(player.rifle);
+		add(player.pistol);
 		add(bullets);
 
-		birds = new FlxTypedGroup<Bird>();
+		lights = new FlxTypedGroup<Light>();
 		cages = new FlxTypedGroup<BirdCage>();
 		crabs = new FlxTypedGroup<Crab>();
 		platforms = new FlxTypedGroup<Platform>();
 		door = new Door(player);
 		
 		map.loadEntities(placeEntities, "entities");
+		lights.add(new Light(player));
+		lights.add(new Light(player));
+		lights.add(new Light(player));
 		
 		add(cages);
 		add(door);
-		add(birds);
+		add(lights);
 		add(crabs);
 		add(platforms);
 		

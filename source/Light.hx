@@ -5,27 +5,25 @@ import flixel.FlxG;
  * ...
  * @author Adil Basar
  */
-class Bird extends FlxSprite
+class Light extends FlxSprite
 {
 	private var player:Player;
 	private var rX:Float;
 	private var rY:Float;
 	private var timer:Float;
-	public function new(X:Int, Y:Int, P:Player) 
+	public function new(P:Player) 
 	{
-		super(X, Y);
+		super(P.x, P.y);
 		player = P;
-		loadGraphic(AssetPaths.bat__png, true, 38, 25);
-		animation.add("fly", [0, 1], 6);
-		animation.play("fly");
-		
+		loadGraphic(AssetPaths.light__png, false, 32, 32);
+
 		getRandomPos();
 	}
 	
 	private function getRandomPos():Void
 	{
-		rX = FlxG.random.int( -80, 80);
-		rY = FlxG.random.int( -80, 80);
+		rX = FlxG.random.int( -55, 55);
+		rY = FlxG.random.int( -55, 55);
 		timer = FlxG.random.float(1, 4);
 	}
 	
@@ -36,6 +34,8 @@ class Bird extends FlxSprite
 		
 		velocity.x = player.x + rX - x;
 		velocity.y = player.y + rY - y;
+		angle += 1;
+		//if (angle > 360) angle = 0;
 		super.update(elapsed);
 	}
 	

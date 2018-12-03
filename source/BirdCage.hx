@@ -22,7 +22,7 @@ class BirdCage extends FlxSprite
 		if (overlaps(playState.player))
 		{
 			if(FlxG.keys.pressed.E){
-				playState.birds.add(new Bird(Std.int(x), Std.int(y), playState.player));
+				//playState.birds.add(new Light(Std.int(x), Std.int(y), playState.player));
 				kill();
 			}
 		}
