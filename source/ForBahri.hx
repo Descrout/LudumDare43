@@ -16,8 +16,10 @@ class ForBahri
 	public static inline var playerMaxVelX = 280;
 	public static inline var playerMaxVelY = 500;
 	public static inline var playerGravity = 980;
-	public static inline var playerFireRate = 1 / 10;
+	public static inline var playerStairSpeed = 160;
 	
+	public static inline var playerSmgFireRate = 1 / 9;
+	public static inline var playerPistolFireRate = 1 / 3;
 	public static inline var maxBullet = 6;
 	public static inline var playerBulletSpeed = 800;
 	public static inline var playerBulletDamage = 1;
@@ -31,6 +33,6 @@ class ForBahri
 	public static inline var crabTriggerRange = 180;
 	public static inline var crabDamage = 5;
 	public static inline var crabKnockback = 300;
-	public static inline var crabKnockbackResistanceX = 2;
+	public static inline var crabKnockbackResistanceX = 3;
 	public static inline var crabKnockbackResistanceY = 3;
 }
