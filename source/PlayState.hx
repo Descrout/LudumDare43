@@ -39,7 +39,7 @@ class PlayState extends FlxState
 			crabs.add(new Crab(x, y, player, tileMap));
 		case "platform":
 			var vis:String = entityData.get("visible");
-			platforms.add(new Platform(x, y, vis)); 
+			platforms.add(new Platform(x, y, vis, player)); 
 		}
 	}
 	public function stairCallBack(Tile:FlxObject, Object:FlxObject)
@@ -118,8 +118,8 @@ class PlayState extends FlxState
 	
 	private function bulletOverlap(bullet:FlxObject, enemy:FlxObject):Void
 	{
-		enemy.velocity.x  = bullet.velocity.x / ForBahri.crabKnockbackResistanceX;
-		enemy.velocity.y  = bullet.velocity.y / ForBahri.crabKnockbackResistanceY;
+		enemy.velocity.x  = bullet.velocity.x * ForBahri.crabKnockbackResistanceX;
+		enemy.velocity.y  = bullet.velocity.y * ForBahri.crabKnockbackResistanceY;
 		
 		enemy.hurt(bullet.health);
 		bullet.kill();
