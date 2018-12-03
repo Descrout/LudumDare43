@@ -26,6 +26,9 @@ class Player extends FlxSprite
 	private var jumpStop:Bool;
 	
 	private var canJump:Bool;
+	
+	public var onStairs:Bool;
+	public var onStairsCol:Bool;
 
 	private var mouseAng:Float;
 
@@ -37,6 +40,7 @@ class Player extends FlxSprite
 
 	private var hpBar:FlxBar;
 	
+	private var hasSmg:Bool;
 	
 	public function new(playState:PlayState) 
 	{
@@ -49,6 +53,7 @@ class Player extends FlxSprite
 		animation.add("goDown", [2], 1, false);
 		animation.add("walk", [3, 4, 5, 6], 12, true);
 		
+		acceleration.y = ForBahri.playerGravity;
 		health = ForBahri.playerHP;
 		speed = ForBahri.playerXAcc;
 		
@@ -56,7 +61,7 @@ class Player extends FlxSprite
 		offset.set(14, 0);
 		
 		maxVelocity.set(ForBahri.playerMaxVelX, ForBahri.playerMaxVelY);
-    	acceleration.y = ForBahri.playerGravity;
+    	
 		drag.x = maxVelocity.x * speed;
 		
 		bullets = playState.bullets;
@@ -67,18 +72,23 @@ class Player extends FlxSprite
 		hpBar.trackParent(-12, -10);
 		playState.add(hpBar);
 		jumpStop = false;
-		
+		onStairs = false;
+		onStairsCol = false;
 		gun = new FlxSprite();
 		gun.loadGraphic(AssetPaths.gun__png, false, 28, 9);
 		gun.origin.set(10, 5);
 
 		
-		FlxG.camera.follow(this,LOCKON,0.1);
+		FlxG.camera.follow(this, LOCKON, 0.1);
+		
+		hasSmg = true;
 	}
 	
 	public function getHurt(dmg:Float, obj:FlxObject, knockback:Int):Void
 	{
 		if (FlxSpriteUtil.isFlickering(this)) return;
+		onStairs = false;
+		acceleration.y = ForBahri.playerGravity;
 		FlxSpriteUtil.flicker(this, 0.5, 0.02, true);
 		velocity.x += knockback * ((obj.x < x) ? 1 : -1);
 		velocity.y -= knockback;
@@ -87,7 +97,8 @@ class Player extends FlxSprite
 	
 	private function shoot():Void
 	{
-		shootTimer.start(ForBahri.playerFireRate);
+		if (hasSmg) shootTimer.start(ForBahri.playerSmgFireRate);
+		else shootTimer.start(ForBahri.playerPistolFireRate);
 		
 		bullets.recycle().shoot(getMidpoint(_point), mouseAng);
 		
@@ -110,10 +121,12 @@ class Player extends FlxSprite
     	sagBas=false;
     	ustBas=false;
 
-    	if(FlxG.keys.pressed.A) solBas=true;
-    	if(FlxG.keys.pressed.D) sagBas=true;
-    	if(FlxG.keys.pressed.W) ustBas = true;
-		if(FlxG.keys.justReleased.W && velocity.y<0) jumpStop = true;
+		if (FlxG.keys.justPressed.Z) hasSmg = !hasSmg;
+		
+    	if(FlxG.keys.pressed.A && !onStairs) solBas=true;
+    	if(FlxG.keys.pressed.D && !onStairs) sagBas=true;
+    	if(FlxG.keys.pressed.SPACE) ustBas = true;
+		if(FlxG.keys.justReleased.SPACE && velocity.y<0) jumpStop = true;
     	if(FlxG.mouse.pressed && !shootTimer.active) shoot();
 		
 		//if(FlxG.keys.pressed.SPACE && velocity.y > 10) velocity.y *= 0.8;
@@ -143,20 +156,35 @@ class Player extends FlxSprite
 		else gun.flipY = true;
 	}
 	
+	private function stairHandle():Void
+	{
+		if (onStairs) {
+			
+			velocity.y = 0;
+			if (FlxG.keys.pressed.W) velocity.y = -ForBahri.playerStairSpeed;
+			if (FlxG.keys.pressed.S) velocity.y = ForBahri.playerStairSpeed;
+			if (FlxG.keys.justPressed.SPACE || !onStairsCol) {
+				onStairs = false;
+				canJump = true;
+				acceleration.y = ForBahri.playerGravity;
+			}
+		}
+		onStairsCol = false;
+	}
+	
 	override public function update(elapsed:Float):Void
 	{
 		canJump = isTouching(FlxObject.DOWN);
 		
     	acceleration.x = 0;
 		
+		stairHandle();
+		
 		gunHandle();
 		
 		handleInput();
 		
 		handleAnimation();
-		
-		//hpBar.x = x;
-		//hpBar.y = y;
 		
 		if (jumpStop){
 			velocity.y *= 0.9;

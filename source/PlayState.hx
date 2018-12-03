@@ -18,6 +18,7 @@ class PlayState extends FlxState
 	public var cages:FlxTypedGroup<BirdCage>;
 	public var birds:FlxTypedGroup<Bird>;
 	private var crabs:FlxTypedGroup<Crab>;
+	private var platforms:FlxTypedGroup<Platform>;
 
 	private var collideWithMap:FlxGroup;
 	private var overlapWithBullets:FlxGroup;
@@ -36,8 +37,23 @@ class PlayState extends FlxState
 			cages.add(new BirdCage(x, y, this));
 			case "crab":
 			crabs.add(new Crab(x, y, player, tileMap));
+		case "platform":
+			var vis:String = entityData.get("visible");
+			platforms.add(new Platform(x, y, vis)); 
 		}
 	}
+	public function stairCallBack(Tile:FlxObject, Object:FlxObject)
+	{
+		player.onStairsCol = true;
+		if ((FlxG.keys.pressed.W || FlxG.keys.pressed.S) && !player.onStairs){
+			player.onStairs = true;
+			player.x = Tile.x + 6;
+			player.acceleration.y = 0;
+			player.velocity.y = 0;
+			player.velocity.x = 0;
+		}
+	}
+	
 	override public function create():Void
 	{
 		super.create();
@@ -48,6 +64,8 @@ class PlayState extends FlxState
 		map = new FlxOgmoLoader(Main.levels[Main.currentLevel]);
 		
 		tileMap = map.loadTilemap(AssetPaths.tiles__png, 32, 32, "walls");
+		tileMap.setTileProperties(39, FlxObject.NONE, stairCallBack, Player);
+		//tileMap.setTileProperties(46, FlxObject.UP);
 		add(tileMap);
 		
 
@@ -67,6 +85,7 @@ class PlayState extends FlxState
 		birds = new FlxTypedGroup<Bird>();
 		cages = new FlxTypedGroup<BirdCage>();
 		crabs = new FlxTypedGroup<Crab>();
+		platforms = new FlxTypedGroup<Platform>();
 		door = new Door(player);
 		
 		map.loadEntities(placeEntities, "entities");
@@ -75,6 +94,7 @@ class PlayState extends FlxState
 		add(door);
 		add(birds);
 		add(crabs);
+		add(platforms);
 		
 		collideWithMap = new FlxGroup();
 		collideWithMap.add(player);
@@ -88,6 +108,7 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		FlxG.collide(collideWithMap, tileMap);
+		FlxG.collide(collideWithMap, platforms);
 		FlxG.overlap(bullets, overlapWithBullets, bulletOverlap);
 		
 		if (FlxG.keys.pressed.R) FlxG.resetGame();

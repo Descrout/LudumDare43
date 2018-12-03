@@ -83,7 +83,6 @@ class Crab extends FlxSprite
 				animation.play("walk");
 				timer = 0;
 				brain.activeState = chase;
-				trace("Seni görüyorum player mah nigga");
 			}
 		}
 		
