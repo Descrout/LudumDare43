@@ -162,7 +162,13 @@ class Player extends FlxSprite
 			
 			velocity.y = 0;
 			if (FlxG.keys.pressed.W) velocity.y = -ForBahri.playerStairSpeed;
-			if (FlxG.keys.pressed.S) velocity.y = ForBahri.playerStairSpeed;
+			if (FlxG.keys.pressed.S){
+				velocity.y = ForBahri.playerStairSpeed;
+				if(isTouching(FlxObject.DOWN)) {
+					onStairs = false;
+					acceleration.y = ForBahri.playerGravity;
+				}
+			}
 			if (FlxG.keys.justPressed.SPACE || !onStairsCol) {
 				onStairs = false;
 				canJump = true;
@@ -175,7 +181,6 @@ class Player extends FlxSprite
 	override public function update(elapsed:Float):Void
 	{
 		canJump = isTouching(FlxObject.DOWN);
-		
     	acceleration.x = 0;
 		
 		stairHandle();
