@@ -7,8 +7,10 @@ package;
 @:final
 class ForBahri 
 {
+
 	public static inline var cameraShakeIntensity = 0.005;
 	public static inline var cameraShakeDuration = 0.05;
+
 	
 	public static inline var playerXAcc = 5;
 	public static inline var playerMaxVelX = 280;
