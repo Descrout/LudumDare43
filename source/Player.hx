@@ -5,6 +5,9 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.math.FlxPoint;
+import flixel.ui.FlxBar;
+import flixel.util.FlxSpriteUtil;
+
 
 /**
  * ...
@@ -32,6 +35,8 @@ class Player extends FlxSprite
 	
 	public var gun:FlxSprite;
 
+	private var hpBar:FlxBar;
+	
 	
 	public function new(playState:PlayState) 
 	{
@@ -44,6 +49,7 @@ class Player extends FlxSprite
 		animation.add("goDown", [2], 1, false);
 		animation.add("walk", [3, 4, 5, 6], 12, true);
 		
+		health = ForBahri.playerHP;
 		speed = ForBahri.playerXAcc;
 		
 		setSize(20, 48);
@@ -57,6 +63,9 @@ class Player extends FlxSprite
 
 		shootTimer = new FlxTimer();
 		
+		hpBar = new FlxBar(0, 0, LEFT_TO_RIGHT, 50, 10, this, "health", 0, 100, true);
+		hpBar.trackParent(-12, -10);
+		playState.add(hpBar);
 		jumpStop = false;
 		
 		gun = new FlxSprite();
@@ -67,10 +76,13 @@ class Player extends FlxSprite
 		FlxG.camera.follow(this,LOCKON,0.1);
 	}
 	
-	public function die():Void
+	public function getHurt(dmg:Float, obj:FlxObject, knockback:Int):Void
 	{
-		kill();
-		FlxG.camera.shake(0.02, 0.2);
+		if (FlxSpriteUtil.isFlickering(this)) return;
+		FlxSpriteUtil.flicker(this, 0.5, 0.02, true);
+		velocity.x += knockback * ((obj.x < x) ? 1 : -1);
+		velocity.y -= knockback;
+		hurt(dmg);		
 	}
 	
 	private function shoot():Void
@@ -79,7 +91,6 @@ class Player extends FlxSprite
 		
 		bullets.recycle().shoot(getMidpoint(_point), mouseAng);
 		
-		//FlxG.camera.shake(0.005, 0.05);
 	}
 	
 	private function handleAnimation():Void
@@ -134,7 +145,6 @@ class Player extends FlxSprite
 	
 	override public function update(elapsed:Float):Void
 	{
-		
 		canJump = isTouching(FlxObject.DOWN);
 		
     	acceleration.x = 0;
@@ -144,6 +154,9 @@ class Player extends FlxSprite
 		handleInput();
 		
 		handleAnimation();
+		
+		//hpBar.x = x;
+		//hpBar.y = y;
 		
 		if (jumpStop){
 			velocity.y *= 0.9;

@@ -3,6 +3,8 @@ import flixel.FlxSprite;
 import flixel.FlxObject;
 import flixel.FlxG;
 import flixel.math.FlxPoint;
+import flixel.math.FlxMath;
+import flixel.tile.FlxTilemap;
 import flixel.util.FlxSpriteUtil;
 
 /**
@@ -15,12 +17,14 @@ class Crab extends FlxSprite
 	private var player:Player;
 	private var speed:Int;
 	private var jumpSpeed:Int;
-	private var changeTime:Int;
+	private var changeTime:Float;
 	private var timer:Float;
 	private var direction:Int;
-	private var chancer:Int;
+	private var damage:Float;
+	private var tileMap:FlxTilemap;
+	private var knockback:Int;
 	
-	public function new(X:Int, Y:Int, P:Player) 
+	public function new(X:Int, Y:Int, P:Player, TileMap:FlxTilemap) 
 	{
 		super(X, Y);
 		loadGraphic(AssetPaths.crab__png, true, 32, 32);
@@ -31,16 +35,18 @@ class Crab extends FlxSprite
 		brain = new FSM(idle);
 		
 		direction = 0;
-		chancer = 50;
 		health = ForBahri.crabHP;
 		speed = FlxG.random.int(5, 10);
 		timer = 0;
-		changeTime = FlxG.random.int(1, 3);
+		changeTime = FlxG.random.float(1, 4);
 		jumpSpeed = FlxG.random.int(ForBahri.crabJumpMin, ForBahri.crabJumpMax);
 		maxVelocity.set(FlxG.random.int(ForBahri.crabRunSpeedMin, ForBahri.crabRunSpeedMax),ForBahri.crabJumpMax);
 		acceleration.y = ForBahri.crabGravity;
+		damage = ForBahri.crabDamage;
+		knockback = ForBahri.crabKnockback;
 		drag.x = maxVelocity.x * speed;
 		player = P;
+		tileMap = TileMap;
 	}
 
 	public function idle():Void
@@ -50,35 +56,53 @@ class Crab extends FlxSprite
 				animation.play("idle");
 				direction = 0;
 			}else {
-				if(FlxG.random.bool(chancer)){
+				if(FlxG.random.bool(50)){
 					direction = 1;
 					flipX = false;
-					chancer-=10;
 				}else{
 					direction = -1;
 					flipX = true;
-					chancer+=10;
 				} 
 				animation.play("walk");
 			}
+			changeTime = FlxG.random.float(1, 4);
 			timer=0;
 		}
 
+		if(isTouching(FlxObject.WALL) || tileMap.getTile(Std.int((x+32*direction) / 32),Std.int((y+32)/ 32))==0) {
+			direction *= -1;
+			flipX = !flipX;
+			changeTime = FlxG.random.float(0.2, 1);
+		}
+		
 		acceleration.x = maxVelocity.x * speed * direction;
 		
-
-		if(Math.abs(player.y - y) < 20){
-			if ((Math.abs(player.x - x) < 200) ){
+		
+		if(FlxMath.distanceBetween(player,this) < ForBahri.crabTriggerRange){
+			if (tileMap.ray(getMidpoint(), player.getMidpoint())){
 				animation.play("walk");
 				timer = 0;
 				brain.activeState = chase;
+				trace("Seni görüyorum player mah nigga");
 			}
+		}
+		
+		
+	}
+	
+	public function attack():Void
+	{
+		if (velocity.y < -5 && overlaps(player)) player.getHurt(damage, this, knockback);
+		if(timer > 1){
+			timer = 0;
+			brain.activeState = chase;
+			animation.play("walk");
 		}
 	}
 	
 	public function chase():Void
 	{
-		if(timer > 3){
+		if(timer > 2){
 			animation.play("idle");
 			direction = 0;
 			timer = 0;
@@ -86,13 +110,24 @@ class Crab extends FlxSprite
 		}
 
 		if(player.x > x){
-			acceleration.x = maxVelocity.x * speed;
+			direction = 1;
 			flipX=false;
 		}else {
-			acceleration.x = -maxVelocity.x * speed;
+			direction = -1;
 			flipX=true;
 		}
-
+		
+		acceleration.x = maxVelocity.x * speed * direction;
+		
+		if(FlxMath.distanceBetween(player,this) < 50){
+			jump();
+			acceleration.x = maxVelocity.x * direction * 50;
+			brain.activeState = attack;
+			animation.play("idle");
+			timer = 0;
+		}
+		
+		if (isTouching(FlxObject.RIGHT) || isTouching(FlxObject.LEFT)) jump();
 	}
 	
 	override public function hurt(dmg:Float):Void
@@ -117,10 +152,7 @@ class Crab extends FlxSprite
 		timer += elapsed;
 		
 		brain.update();
-		
-		if (isTouching(FlxObject.RIGHT)) jump();
-		if (isTouching(FlxObject.LEFT)) jump();
-		
+
 		super.update(elapsed);
 	}
 }
