@@ -49,7 +49,7 @@ class Player extends FlxSprite
 		animation.add("goDown", [2], 1, false);
 		animation.add("walk", [3, 4, 5, 6], 12, true);
 		
-		health = 100;
+		health = ForBahri.playerHP;
 		speed = ForBahri.playerXAcc;
 		
 		setSize(20, 48);
