@@ -16,7 +16,7 @@
     <Width>640</Width>
     <Height>480</Height>
   </LevelMaximumSize>
-  <Filename>C:\Users\descr\Desktop\ludum43.oep</Filename>
+  <Filename>C:\Users\Bahri SERTKAYA\Documents\New Project\git files\LudumDare43\ludum43.oep</Filename>
   <AngleMode>Degrees</AngleMode>
   <CameraEnabled>false</CameraEnabled>
   <CameraSize>
@@ -41,8 +41,8 @@
     <LayerDefinition xsi:type="EntityLayerDefinition">
       <Name>entities</Name>
       <Grid>
-        <Width>48</Width>
-        <Height>48</Height>
+        <Width>32</Width>
+        <Height>32</Height>
       </Grid>
       <ScrollFactor>
         <X>1</X>
@@ -53,7 +53,7 @@
   <Tilesets>
     <Tileset>
       <Name>toprak</Name>
-      <FilePath>..\Documents\ludumdare43\assets\images\tiles.png</FilePath>
+      <FilePath>assets\images\tileset.png</FilePath>
       <TileSize>
         <Width>32</Width>
         <Height>32</Height>
@@ -71,7 +71,7 @@
         <X>0</X>
         <Y>0</Y>
       </Origin>
-      <ImageDefinition DrawMode="Image" ImagePath="..\Documents\ludumdare43\assets\images\playerIdle.png" Tiled="false">
+      <ImageDefinition DrawMode="Image" ImagePath="assets\images\player.png" Tiled="true">
         <RectColor A="255" R="255" G="0" B="0" />
       </ImageDefinition>
       <ValueDefinitions />
@@ -86,7 +86,7 @@
         <X>0</X>
         <Y>0</Y>
       </Origin>
-      <ImageDefinition DrawMode="Image" ImagePath="..\Documents\ludumdare43\assets\images\door.png" Tiled="false">
+      <ImageDefinition DrawMode="Image" ImagePath="assets\images\door.png" Tiled="false">
         <RectColor A="255" R="255" G="0" B="0" />
       </ImageDefinition>
       <ValueDefinitions />
@@ -101,7 +101,7 @@
         <X>0</X>
         <Y>0</Y>
       </Origin>
-      <ImageDefinition DrawMode="Image" ImagePath="..\Documents\ludumdare43\assets\images\batCage.png" Tiled="false">
+      <ImageDefinition DrawMode="Image" ImagePath="assets\images\batCage.png" Tiled="false">
         <RectColor A="255" R="255" G="0" B="0" />
       </ImageDefinition>
       <ValueDefinitions />
@@ -116,7 +116,7 @@
         <X>0</X>
         <Y>0</Y>
       </Origin>
-      <ImageDefinition DrawMode="Image" ImagePath="..\Documents\ludumdare43\assets\images\crab.png" Tiled="true">
+      <ImageDefinition DrawMode="Image" ImagePath="assets\images\crab.png" Tiled="true">
         <RectColor A="255" R="255" G="0" B="0" />
       </ImageDefinition>
       <ValueDefinitions />
