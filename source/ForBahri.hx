@@ -7,7 +7,9 @@ package;
 @:final
 class ForBahri 
 {
-	//bahri burayı sil
+	public static inline var cameraShakeIntensity = 0.005;
+	public static inline var cameraShakeDuration = 0.05;
+	
 	public static inline var playerXAcc = 5;
 	public static inline var playerMaxVelX = 280;
 	public static inline var playerMaxVelY = 500;
@@ -24,5 +26,8 @@ class ForBahri
 	public static inline var crabJumpMax = 320;
 	public static inline var crabGravity = 980;
 	public static inline var crabHP = 5;
+	public static inline var crabTriggerRange = 180;
+	public static inline var crabDamage = 5;
+	public static inline var crabKnockback = 300;
 	
 }

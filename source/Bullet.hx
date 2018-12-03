@@ -45,8 +45,6 @@ class Bullet extends FlxSprite
 		animation.play("poof");
 		alive = false;
 		solid = false;
-		FlxG.camera.shake(0.005, 0.05);
-		
 	}
 	
 	public function shoot(Location:FlxPoint, Angle:Float):Void 
@@ -59,5 +57,6 @@ class Bullet extends FlxSprite
 		velocity.y = _point.y;
 		solid = true;
 		animation.play("shoot");
+		FlxG.camera.shake(ForBahri.cameraShakeIntensity, ForBahri.cameraShakeDuration);
 	}
 }

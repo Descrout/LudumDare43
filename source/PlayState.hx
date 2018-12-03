@@ -35,7 +35,7 @@ class PlayState extends FlxState
 			case "cage":
 			cages.add(new BirdCage(x, y, this));
 			case "crab":
-			crabs.add(new Crab(x, y, player));
+			crabs.add(new Crab(x, y, player, tileMap));
 		}
 	}
 	override public function create():Void
@@ -43,6 +43,7 @@ class PlayState extends FlxState
 		super.create();
 		FlxG.debugger.visible = true;
 		FlxG.cameras.bgColor = 0x7DA0FF;
+		FlxG.camera.antialiasing = false;
 		
 		map = new FlxOgmoLoader(Main.levels[Main.currentLevel]);
 		
@@ -62,7 +63,7 @@ class PlayState extends FlxState
 		add(player);
 		add(player.gun);
 		add(bullets);
-		
+
 		birds = new FlxTypedGroup<Bird>();
 		cages = new FlxTypedGroup<BirdCage>();
 		crabs = new FlxTypedGroup<Crab>();
@@ -96,8 +97,8 @@ class PlayState extends FlxState
 	
 	private function bulletOverlap(bullet:FlxObject, enemy:FlxObject):Void
 	{
-		enemy.velocity.x  = bullet.velocity.x;
-		enemy.velocity.y  = bullet.velocity.y;
+		enemy.velocity.x  = bullet.velocity.x / 2;
+		enemy.velocity.y  = bullet.velocity.y / 3;
 		
 		enemy.hurt(bullet.health);
 		bullet.kill();
