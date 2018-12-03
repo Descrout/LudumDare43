@@ -119,9 +119,9 @@ class Crab extends FlxSprite
 		
 		acceleration.x = maxVelocity.x * speed * direction;
 		
-		if(FlxMath.distanceBetween(player,this) < 50){
+		if(FlxMath.distanceToPoint(this, player.getMidpoint()) < 40){
 			jump();
-			acceleration.x = maxVelocity.x * direction * 50;
+			velocity.x = direction * 250;
 			brain.activeState = attack;
 			animation.play("idle");
 			timer = 0;
