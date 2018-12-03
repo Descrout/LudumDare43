@@ -97,8 +97,8 @@ class PlayState extends FlxState
 	
 	private function bulletOverlap(bullet:FlxObject, enemy:FlxObject):Void
 	{
-		enemy.velocity.x  = bullet.velocity.x / 2;
-		enemy.velocity.y  = bullet.velocity.y / 3;
+		enemy.velocity.x  = bullet.velocity.x / ForBahri.crabKnockbackResistanceX;
+		enemy.velocity.y  = bullet.velocity.y / ForBahri.crabKnockbackResistanceY;
 		
 		enemy.hurt(bullet.health);
 		bullet.kill();

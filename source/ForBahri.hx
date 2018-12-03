@@ -31,5 +31,6 @@ class ForBahri
 	public static inline var crabTriggerRange = 180;
 	public static inline var crabDamage = 5;
 	public static inline var crabKnockback = 300;
-	
+	public static inline var crabKnockbackResistanceX = 2;
+	public static inline var crabKnockbackResistanceY = 3;
 }
