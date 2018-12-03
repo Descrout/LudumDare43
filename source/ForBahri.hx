@@ -31,10 +31,11 @@ class ForBahri
 	public static inline var crabJumpMax = 320;
 	public static inline var crabGravity = 980;
 	public static inline var crabHP = 5;
-	public static inline var crabTriggerRange = 180;
+	public static inline var crabTriggerRange = 100;
 	public static inline var crabDamage = 20;
 	public static inline var crabKnockback = 300;
-
+	public static inline var crabRageAmount = 5;
 	public static inline var crabKnockbackResistanceX = 0.5;
 	public static inline var crabKnockbackResistanceY = 0;
+
 }

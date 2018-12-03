@@ -7,7 +7,7 @@ import flixel.FlxObject;
 import flixel.math.FlxPoint;
 import flixel.ui.FlxBar;
 import flixel.util.FlxSpriteUtil;
-
+import flixel.util.FlxColor;
 
 /**
  * ...
@@ -36,11 +36,15 @@ class Player extends FlxSprite
 
 	private var bullets:FlxTypedGroup<Bullet>;
 	
-	public var gun:FlxSprite;
+	public var rifle:FlxSprite;
+	public var pistol:FlxSprite;
 
 	private var hpBar:FlxBar;
+	private var rageBar:FlxBar;
 	
 	private var hasSmg:Bool;
+	
+	public var rage:Int;
 	
 	public function new(playState:PlayState) 
 	{
@@ -57,6 +61,8 @@ class Player extends FlxSprite
 		health = ForBahri.playerHP;
 		speed = ForBahri.playerXAcc;
 		
+		rage = 0;
+		
 		setSize(20, 48);
 		offset.set(14, 0);
 		
@@ -69,15 +75,26 @@ class Player extends FlxSprite
 		shootTimer = new FlxTimer();
 		
 		hpBar = new FlxBar(0, 0, LEFT_TO_RIGHT, 50, 10, this, "health", 0, 100, true);
-		hpBar.trackParent(-12, -10);
+		hpBar.trackParent( -12, -10);
+		hpBar.createFilledBar(FlxColor.BLACK, FlxColor.GREEN, true);
 		playState.add(hpBar);
+		
+		rageBar = new FlxBar(0, 0, LEFT_TO_RIGHT, 50, 10, this, "rage", 0, 50, true);
+		rageBar.trackParent( -12, -30);
+		rageBar.createFilledBar(FlxColor.BLACK, FlxColor.YELLOW, true);
+		playState.add(rageBar);
+		
 		jumpStop = false;
 		onStairs = false;
 		onStairsCol = false;
-		gun = new FlxSprite();
-		gun.loadGraphic(AssetPaths.gun__png, false, 28, 9);
-		gun.origin.set(10, 5);
-
+		rifle = new FlxSprite();
+		rifle.loadGraphic(AssetPaths.rifle__png, false, 37, 18);
+		rifle.origin.set(10, 5);
+		
+		pistol = new FlxSprite();
+		pistol.loadGraphic(AssetPaths.pistol__png, false, 27, 16);
+		pistol.origin.set(10, 5);
+		pistol.visible = false;
 		
 		FlxG.camera.follow(this, LOCKON, 0.1);
 		
@@ -121,7 +138,11 @@ class Player extends FlxSprite
     	sagBas=false;
     	ustBas=false;
 
-		if (FlxG.keys.justPressed.Z) hasSmg = !hasSmg;
+		if (FlxG.keys.justPressed.Z){
+			 hasSmg = !hasSmg;
+			 rifle.visible = !rifle.visible;
+			 pistol.visible = !pistol.visible;
+		}
 		
     	if(FlxG.keys.pressed.A && !onStairs) solBas=true;
     	if(FlxG.keys.pressed.D && !onStairs) sagBas=true;
@@ -148,12 +169,19 @@ class Player extends FlxSprite
 		
 		var mp:FlxPoint = FlxG.mouse.getPosition();
 		mouseAng = getMidpoint(_point).angleBetween(mp);
-		gun.x = this.x;
-		gun.y = this.y + 30;
-		gun.angle = mouseAng - 90;
+		rifle.x = this.x;
+		rifle.y = this.y + 30;
+		rifle.angle = mouseAng - 90;
 		
-		if (mp.x > this.x) gun.flipY = false;
-		else gun.flipY = true;
+		if (mp.x > this.x) rifle.flipY = false;
+		else rifle.flipY = true;
+		
+		pistol.x = this.x;
+		pistol.y = this.y + 30;
+		pistol.angle = mouseAng - 90;
+		
+		if (mp.x > this.x) pistol.flipY = false;
+		else pistol.flipY = true;
 	}
 	
 	private function stairHandle():Void
