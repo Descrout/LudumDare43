@@ -76,7 +76,7 @@ class Crab extends FlxSprite
 			timer=0;
 		}
 
-		if(isTouching(FlxObject.WALL) || tileMap.getTile(Std.int((x+32*direction) / 32),Std.int((y+32)/ 32))==0) {
+		if(isTouching(FlxObject.DOWN) && (isTouching(FlxObject.WALL) || tileMap.getTile(Std.int((x+32*direction) / 32),Std.int((y+32)/ 32))==0)){
 			direction *= -1;
 			flipX = !flipX;
 			changeTime = FlxG.random.float(0.2, 1);
