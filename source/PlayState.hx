@@ -91,8 +91,6 @@ class PlayState extends FlxState
 		
 		map.loadEntities(placeEntities, "entities");
 		lights.add(new Light(player));
-		lights.add(new Light(player));
-		lights.add(new Light(player));
 		
 		add(cages);
 		add(door);

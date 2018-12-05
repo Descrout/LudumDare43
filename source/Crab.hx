@@ -30,7 +30,9 @@ class Crab extends FlxSprite
 		super(X, Y);
 		loadGraphic(AssetPaths.crab_walk__png, true, 32, 32);
 		animation.add("idle",[0,1],3,true);
-		animation.add("walk",[2,3,4,5,6,7,8,9],12,true);
+		animation.add("walk", [2, 3, 4, 5, 6, 7], 12, true);
+		animation.add("up", [8]);
+		animation.add("down",[9]);
 		animation.play("idle");
 		
 		setSize(32, 16);
@@ -91,6 +93,7 @@ class Crab extends FlxSprite
 			}
 		}
 		
+		if (velocity.y > 0) animation.play("down");
 		
 	}
 	
@@ -101,11 +104,14 @@ class Crab extends FlxSprite
 	
 	public function attack():Void
 	{
-		if (velocity.y < -5 && overlaps(player)) player.getHurt(damage, this, knockback);
+		
 		if(timer > 1){
 			timer = 0;
 			brain.activeState = chase;
 			animation.play("walk");
+		}else {
+			if (velocity.y < -5 && overlaps(player)) player.getHurt(damage, this, knockback);
+			if (velocity.y > 0) animation.play("down");
 		}
 	}
 	
@@ -132,11 +138,12 @@ class Crab extends FlxSprite
 			jump();
 			velocity.x = direction * 250;
 			brain.activeState = attack;
-			animation.play("idle");
+
 			timer = 0;
 		}
 		
 		if (isTouching(FlxObject.RIGHT) || isTouching(FlxObject.LEFT)) jump();
+		if (velocity.y > 0) animation.play("down");
 	}
 	
 	override public function hurt(dmg:Float):Void
@@ -152,7 +159,10 @@ class Crab extends FlxSprite
 	
 	private function jump():Void
 	{
-		if(isTouching(FlxObject.DOWN))velocity.y = -jumpSpeed;
+		if(isTouching(FlxObject.DOWN)){
+			animation.play("up");
+			velocity.y = -jumpSpeed;
+		}
 	}
 	
 	override public function update(elapsed:Float):Void
