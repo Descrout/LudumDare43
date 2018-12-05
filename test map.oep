@@ -29,8 +29,8 @@
     <LayerDefinition xsi:type="GridLayerDefinition">
       <Name>NewLayer0</Name>
       <Grid>
-        <Width>16</Width>
-        <Height>16</Height>
+        <Width>32</Width>
+        <Height>32</Height>
       </Grid>
       <ScrollFactor>
         <X>1</X>
@@ -45,8 +45,8 @@
       <Name>NewTileset0</Name>
       <FilePath>assets\images\tileset.png</FilePath>
       <TileSize>
-        <Width>16</Width>
-        <Height>16</Height>
+        <Width>32</Width>
+        <Height>32</Height>
       </TileSize>
       <TileSep>0</TileSep>
     </Tileset>
