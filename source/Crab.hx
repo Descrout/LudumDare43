@@ -110,8 +110,12 @@ class Crab extends FlxSprite
 			brain.activeState = chase;
 			animation.play("walk");
 		}else {
+			if(!isTouching(FlxObject.DOWN)){
 			if (velocity.y < -5 && overlaps(player)) player.getHurt(damage, this, knockback);
 			if (velocity.y > 0) animation.play("down");
+			}else{
+				animation.play("idle");
+			}
 		}
 	}
 	
