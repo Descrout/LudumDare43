@@ -26,7 +26,7 @@ class ForBahri
 	public static inline var playerBulletDamage = 1;
 	
 	public static inline var crabRunSpeedMin = 180;
-	public static inline var crabRunSpeedMax = 220;
+	public static inline var crabRunSpeedMax = 200;
 	public static inline var crabJumpMin = 280;
 	public static inline var crabJumpMax = 320;
 	public static inline var crabGravity = 980;

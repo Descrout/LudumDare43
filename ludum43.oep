@@ -16,7 +16,7 @@
     <Width>640</Width>
     <Height>480</Height>
   </LevelMaximumSize>
-  <Filename>C:\Users\Bahri SERTKAYA\Documents\New Project\git files\LudumDare43\ludum43.oep</Filename>
+  <Filename>C:\Users\descr\Documents\ludumdare43\ludum43.oep</Filename>
   <AngleMode>Degrees</AngleMode>
   <CameraEnabled>false</CameraEnabled>
   <CameraSize>
@@ -116,7 +116,7 @@
         <X>0</X>
         <Y>0</Y>
       </Origin>
-      <ImageDefinition DrawMode="Image" ImagePath="assets\images\crab.png" Tiled="true">
+      <ImageDefinition DrawMode="Image" ImagePath="assets\images\crab_walk.png" Tiled="true">
         <RectColor A="255" R="255" G="0" B="0" />
       </ImageDefinition>
       <ValueDefinitions />

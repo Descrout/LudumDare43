@@ -28,10 +28,13 @@ class Crab extends FlxSprite
 	public function new(X:Int, Y:Int, P:Player, TileMap:FlxTilemap) 
 	{
 		super(X, Y);
-		loadGraphic(AssetPaths.crab__png, true, 32, 32);
-		animation.add("idle",[0]);
-		animation.add("walk",[1,2,3,4],12,true);
+		loadGraphic(AssetPaths.crab_walk__png, true, 32, 32);
+		animation.add("idle",[0,1],3,true);
+		animation.add("walk",[2,3,4,5,6,7,8,9],12,true);
 		animation.play("idle");
+		
+		setSize(32, 16);
+		offset.set(0, 16);
 		
 		brain = new FSM(idle);
 		
