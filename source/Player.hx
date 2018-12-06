@@ -106,7 +106,7 @@ class Player extends FlxSprite
 		if (FlxSpriteUtil.isFlickering(this)) return;
 		onStairs = false;
 		acceleration.y = ForBahri.playerGravity;
-		FlxSpriteUtil.flicker(this, 0.5, 0.02, true);
+		FlxSpriteUtil.flicker(this, 0.8, 0.02, true);
 		velocity.x += knockback * ((obj.x < x) ? 1 : -1);
 		velocity.y -= knockback;
 		hurt(dmg);		
