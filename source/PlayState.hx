@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxState;
+import flixel.effects.particles.FlxEmitter;
 import flixel.tile.FlxTilemap;
 import flixel.addons.editors.ogmo.FlxOgmoLoader;
 import flixel.group.FlxGroup;
@@ -23,6 +24,8 @@ class PlayState extends FlxState
 	private var collideWithMap:FlxGroup;
 	private var overlapWithBullets:FlxGroup;
 	
+	private var crabGibs:FlxEmitter;
+	
 	function placeEntities(entityName:String, entityData:Xml):Void
 	{
 		var x:Int = Std.parseInt(entityData.get("x"));
@@ -36,7 +39,7 @@ class PlayState extends FlxState
 			case "cage":
 			cages.add(new BirdCage(x, y, this));
 			case "crab":
-			crabs.add(new Crab(x, y, player, tileMap));
+			crabs.add(new Crab(x, y, player, tileMap, crabGibs));
 		case "platform":
 			var vis:String = entityData.get("visible");
 			platforms.add(new Platform(x, y, vis, player)); 
@@ -70,6 +73,11 @@ class PlayState extends FlxState
 		tileMap.setTileProperties(13, FlxObject.NONE);
 		add(tileMap);
 		
+		crabGibs = new FlxEmitter();
+		crabGibs.angularVelocity.set(-600, 600);
+		crabGibs.acceleration.set(0, 350);
+		crabGibs.launchMode = FlxEmitterMode.SQUARE;
+		crabGibs.loadParticles(AssetPaths.crabGibs__png, 30, 10, true);
 
 		bullets = new FlxTypedGroup<Bullet>(ForBahri.maxBullet);
 		var bulletHolder:Bullet;
@@ -100,10 +108,13 @@ class PlayState extends FlxState
 		add(crabs);
 		add(platforms);
 		
+		add(crabGibs);
+		
 		collideWithMap = new FlxGroup();
 		collideWithMap.add(player);
 		collideWithMap.add(bullets);
 		collideWithMap.add(crabs);
+
 		
 		overlapWithBullets = new FlxGroup();
 		overlapWithBullets.add(crabs);
@@ -127,6 +138,11 @@ class PlayState extends FlxState
 		//enemy.velocity.y  = bullet.velocity.y * ForBahri.crabKnockbackResistanceY;
 		
 		enemy.hurt(bullet.health);
+		if (enemy.health <= 0){
+			crabGibs.focusOn(enemy);
+			crabGibs.velocity.set(bullet.velocity.x/5-100, bullet.velocity.y/5-100, bullet.velocity.x/5+100, bullet.velocity.y/5+100);
+			crabGibs.start(true, 0, 12);
+		}
 		bullet.kill();
 	}
 }

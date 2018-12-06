@@ -2,6 +2,7 @@ package;
 import flixel.FlxSprite;
 import flixel.FlxObject;
 import flixel.FlxG;
+import flixel.effects.particles.FlxEmitter;
 import flixel.math.FlxPoint;
 import flixel.math.FlxMath;
 import flixel.tile.FlxTilemap;
@@ -28,8 +29,9 @@ class Crab extends FlxSprite
 	
 	private var touchingDown:Bool;
 	private var touchingWall:Bool;
+	private var gibs:FlxEmitter;
 	
-	public function new(X:Int, Y:Int, P:Player, TileMap:FlxTilemap) 
+	public function new(X:Int, Y:Int, P:Player, TileMap:FlxTilemap, Gibs:FlxEmitter) 
 	{
 		super(X, Y);
 		loadGraphic(AssetPaths.crab_walk__png, true, 32, 32);
@@ -59,6 +61,7 @@ class Crab extends FlxSprite
 		drag.x = speed * 4;
 		player = P;
 		tileMap = TileMap;
+		gibs = Gibs;
 	}
 
 	public function move():Void
@@ -129,7 +132,15 @@ class Crab extends FlxSprite
 	
 	override public function kill():Void{
 		player.rage += rageAmount;
+		FlxG.camera.shake(0.007, 0.25);
+		FlxG.camera.flash(0xffd8eba2, 0.1, turnOffSlowMo);
+		FlxG.timeScale = 0.35;
 		super.kill();
+	}
+	
+	function turnOffSlowMo():Void
+	{
+		FlxG.timeScale = 1.0;
 	}
 	
 	public function attack():Void
@@ -199,7 +210,7 @@ class Crab extends FlxSprite
 
 		if (brain.activeState == chase)
 			timer = 0;
-		//super.hurt(dmg);		
+		super.hurt(dmg);		
 	}
 	
 	private function jump():Void

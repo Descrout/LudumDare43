@@ -26,6 +26,12 @@
     <crab id="3" x="352" y="288" />
     <crab id="4" x="320" y="192" />
     <crab id="5" x="448" y="192" />
-    <platform id="6" x="384" y="224" />
+    <platform id="6" x="384" y="224" visible="False" />
+    <crab id="7" x="672" y="256" />
+    <crab id="8" x="896" y="256" />
+    <crab id="9" x="800" y="160" />
+    <crab id="10" x="992" y="256" />
+    <crab id="11" x="1152" y="192" />
+    <crab id="12" x="1024" y="192" />
   </entities>
 </level>
