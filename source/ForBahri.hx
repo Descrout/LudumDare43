@@ -21,7 +21,7 @@ class ForBahri
 	public static inline var playerSmgFireRate = 1 / 5;
 	public static inline var playerPistolFireRate = 1 / 2;
 	public static inline var maxBullet = 6;
-	public static inline var playerBulletSpeed = 600;
+	public static inline var playerBulletSpeed = 800;
 
 	public static inline var playerBulletDamage = 1;
 	

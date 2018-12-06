@@ -60,6 +60,8 @@ class PlayState extends FlxState
 		FlxG.debugger.visible = true;
 		FlxG.cameras.bgColor = 0x7DA0FF;
 		FlxG.camera.antialiasing = false;
+		FlxG.worldBounds.width = 2048;
+		FlxG.worldBounds.height = 640;
 		
 		map = new FlxOgmoLoader(Main.levels[Main.currentLevel]);
 		
@@ -109,6 +111,7 @@ class PlayState extends FlxState
 
 	override public function update(elapsed:Float):Void
 	{
+		
 		FlxG.collide(collideWithMap, tileMap);
 		FlxG.collide(collideWithMap, platforms);
 		FlxG.overlap(bullets, overlapWithBullets, bulletOverlap);
@@ -120,7 +123,7 @@ class PlayState extends FlxState
 	
 	private function bulletOverlap(bullet:FlxObject, enemy:FlxObject):Void
 	{
-		enemy.velocity.x  = (bullet.velocity.x / 2) * ForBahri.crabKnockbackResistanceX;
+		enemy.velocity.x  += bullet.velocity.x  * ForBahri.crabKnockbackResistanceX;
 		//enemy.velocity.y  = bullet.velocity.y * ForBahri.crabKnockbackResistanceY;
 		
 		enemy.hurt(bullet.health);

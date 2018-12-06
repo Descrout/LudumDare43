@@ -22,6 +22,6 @@ class Main extends Sprite
 			levels.push("assets/data/level" + (i + 1) + ".oel");
 		}
 		
-		addChild(new FlxGame(640, 480, PlayState, 1, 60, 60, true, false));
+		addChild(new FlxGame(0, 0, PlayState, 1, 60, 60, true, false));
 	}
 }

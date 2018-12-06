@@ -56,14 +56,14 @@ class Crab extends FlxSprite
 		acceleration.y = ForBahri.crabGravity;
 		damage = ForBahri.crabDamage;
 		knockback = ForBahri.crabKnockback;
-		drag.x = speed * 3;
+		drag.x = speed * 4;
 		player = P;
 		tileMap = TileMap;
 	}
 
 	public function move():Void
 	{
-		acceleration.x = speed  * direction;
+		acceleration.x += speed  * direction;
 		if (touchingDown){
 			if(velocity.x > speed) velocity.x = speed;
 			else if (velocity.x < -speed) velocity.x = -speed;
@@ -147,6 +147,9 @@ class Crab extends FlxSprite
 			flipX = !flipX;
 			velocity.x *= -1;
 		} 
+		
+		
+		
 		if (overlaps(player)) player.getHurt(damage, this, knockback);
 	}
 	
@@ -178,15 +181,16 @@ class Crab extends FlxSprite
 		if(timer>0.6){
 			jump();
 			whichSide();
+			
 			brain.activeState = attack;
-			velocity.x = direction * attackRange * 4 + 50;
+			velocity.x = direction * attackRange * 5;
 			timer = 0;
 		}
 	}
 	
 	override public function hurt(dmg:Float):Void
 	{
-		FlxSpriteUtil.flicker(this, 0.2, 0.02, true);
+		//FlxSpriteUtil.flicker(this, 0.2, 0.02, true);
 		if(brain.activeState == idle){
 			timer = 0;
 			brain.activeState = chase;
@@ -195,7 +199,7 @@ class Crab extends FlxSprite
 
 		if (brain.activeState == chase)
 			timer = 0;
-		super.hurt(dmg);		
+		//super.hurt(dmg);		
 	}
 	
 	private function jump():Void
@@ -220,7 +224,7 @@ class Crab extends FlxSprite
 		touchingDown = isTouching(FlxObject.DOWN);
 		touchingWall = isTouching(FlxObject.WALL);
 		
-		acceleration.x = 0;	
+		
 		
 		timer += elapsed;
 		
@@ -228,7 +232,8 @@ class Crab extends FlxSprite
 		
 		handleAnim();
 		
-		trace(velocity.x);
+		//trace(velocity.x);
 		super.update(elapsed);
+		acceleration.x = 0;	
 	}
 }

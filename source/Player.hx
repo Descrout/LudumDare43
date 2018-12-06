@@ -109,7 +109,7 @@ class Player extends FlxSprite
 		FlxSpriteUtil.flicker(this, 0.8, 0.02, true);
 		velocity.x += knockback * ((obj.x < x) ? 1 : -1);
 		velocity.y -= knockback;
-		hurt(dmg);		
+		//hurt(dmg);		
 	}
 	
 	private function shoot():Void
