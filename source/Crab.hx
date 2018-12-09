@@ -133,7 +133,7 @@ class Crab extends FlxSprite
 	override public function kill():Void{
 		player.rage += rageAmount;
 		FlxG.camera.shake(0.007, 0.25);
-		FlxG.camera.flash(0xffd8eba2, 0.1, turnOffSlowMo);
+		FlxG.camera.flash(0xffd8eba2, 0.2, turnOffSlowMo);
 		FlxG.timeScale = 0.35;
 		super.kill();
 	}

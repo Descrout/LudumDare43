@@ -50,12 +50,12 @@ class Player extends FlxSprite
 	{
 		super();
 		
-		loadGraphic(AssetPaths.player__png, true , 48,48);
+		loadGraphic(AssetPaths.player_sprites__png, true , 64,64);
 
-		animation.add("idle", [0], 1, false);
-		animation.add("goUp", [1], 1, false);
-		animation.add("goDown", [2], 1, false);
-		animation.add("walk", [3, 4, 5, 6], 12, true);
+		animation.add("idle", [14], 1, false);
+		animation.add("goUp", [12], 1, false);
+		animation.add("goDown", [13], 1, false);
+		animation.add("walk", [0,1,2,3,4,5,6,7,8,9,10,11], 12, true);
 		
 		acceleration.y = ForBahri.playerGravity;
 		health = ForBahri.playerHP;
@@ -64,7 +64,7 @@ class Player extends FlxSprite
 		rage = 0;
 		
 		setSize(20, 48);
-		offset.set(14, 0);
+		offset.set(20, 16);
 		
 		maxVelocity.set(ForBahri.playerMaxVelX, ForBahri.playerMaxVelY);
     	
@@ -75,12 +75,12 @@ class Player extends FlxSprite
 		shootTimer = new FlxTimer();
 		
 		hpBar = new FlxBar(0, 0, LEFT_TO_RIGHT, 50, 10, this, "health", 0, 100, true);
-		hpBar.trackParent( -12, -10);
+		hpBar.trackParent( -12, -20);
 		hpBar.createFilledBar(FlxColor.BLACK, FlxColor.GREEN, true);
 		playState.add(hpBar);
 		
 		rageBar = new FlxBar(0, 0, LEFT_TO_RIGHT, 50, 10, this, "rage", 0, 50, true);
-		rageBar.trackParent( -12, -30);
+		rageBar.trackParent( -12, -40);
 		rageBar.createFilledBar(FlxColor.BLACK, FlxColor.YELLOW, true);
 		playState.add(rageBar);
 		
@@ -89,11 +89,11 @@ class Player extends FlxSprite
 		onStairsCol = false;
 		rifle = new FlxSprite();
 		rifle.loadGraphic(AssetPaths.rifle__png, false, 37, 18);
-		rifle.origin.set(10, 5);
+		rifle.origin.set(10, 9);
 		
 		pistol = new FlxSprite();
 		pistol.loadGraphic(AssetPaths.pistol__png, false, 27, 16);
-		pistol.origin.set(10, 5);
+		pistol.origin.set(10, 8);
 		pistol.visible = false;
 		
 		FlxG.camera.follow(this, LOCKON, 0.1);
@@ -170,14 +170,14 @@ class Player extends FlxSprite
 		var mp:FlxPoint = FlxG.mouse.getPosition();
 		mouseAng = getMidpoint(_point).angleBetween(mp);
 		rifle.x = this.x;
-		rifle.y = this.y + 30;
+		rifle.y = this.y + 20;
 		rifle.angle = mouseAng - 90;
 		
 		if (mp.x > this.x) rifle.flipY = false;
 		else rifle.flipY = true;
 		
 		pistol.x = this.x;
-		pistol.y = this.y + 30;
+		pistol.y = this.y + 20;
 		pistol.angle = mouseAng - 90;
 		
 		if (mp.x > this.x) pistol.flipY = false;
