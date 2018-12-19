@@ -17,14 +17,15 @@ class PlayState extends FlxState
 	
 	public var bullets:FlxTypedGroup<Bullet>;
 	public var cages:FlxTypedGroup<BirdCage>;
-	public var lights:FlxTypedGroup<Light>;
 	private var crabs:FlxTypedGroup<Crab>;
+	public var rockies:FlxTypedGroup<Rocky>;
 	private var platforms:FlxTypedGroup<Platform>;
 
 	private var collideWithMap:FlxGroup;
 	private var overlapWithBullets:FlxGroup;
 	
 	private var crabGibs:FlxEmitter;
+	private var rockyGibs:FlxEmitter;
 	
 	function placeEntities(entityName:String, entityData:Xml):Void
 	{
@@ -40,7 +41,9 @@ class PlayState extends FlxState
 			cages.add(new BirdCage(x, y, this));
 			case "crab":
 			crabs.add(new Crab(x, y, player, tileMap, crabGibs));
-		case "platform":
+			case "rocky":
+			rockies.add(new Rocky(x, y, player, tileMap, rockyGibs));
+			case "platform":
 			var vis:String = entityData.get("visible");
 			platforms.add(new Platform(x, y, vis, player)); 
 		}
@@ -78,6 +81,12 @@ class PlayState extends FlxState
 		crabGibs.acceleration.set(0, 350);
 		crabGibs.launchMode = FlxEmitterMode.SQUARE;
 		crabGibs.loadParticles(AssetPaths.crabGibs__png, 30, 10, true);
+		
+		rockyGibs = new FlxEmitter();
+		rockyGibs.angularVelocity.set(-600, 600);
+		rockyGibs.acceleration.set(0, 350);
+		rockyGibs.launchMode = FlxEmitterMode.SQUARE;
+		rockyGibs.loadParticles(AssetPaths.rockyGibs__png, 30, 10, true);
 
 		bullets = new FlxTypedGroup<Bullet>(ForBahri.maxBullet);
 		var bulletHolder:Bullet;
@@ -93,22 +102,23 @@ class PlayState extends FlxState
 		add(player.pistol);
 		add(bullets);
 
-		lights = new FlxTypedGroup<Light>();
 		cages = new FlxTypedGroup<BirdCage>();
 		crabs = new FlxTypedGroup<Crab>();
 		platforms = new FlxTypedGroup<Platform>();
+		rockies = new FlxTypedGroup<Rocky>();
 		door = new Door(player);
 		
 		map.loadEntities(placeEntities, "entities");
-		lights.add(new Light(player));
+
 		
 		add(cages);
 		add(door);
-		add(lights);
 		add(crabs);
 		add(platforms);
+		add(rockies);
 		
 		add(crabGibs);
+		add(rockyGibs);
 		
 		collideWithMap = new FlxGroup();
 		collideWithMap.add(player);
@@ -118,11 +128,12 @@ class PlayState extends FlxState
 		
 		overlapWithBullets = new FlxGroup();
 		overlapWithBullets.add(crabs);
+		overlapWithBullets.add(rockies);
 	}
 
 	override public function update(elapsed:Float):Void
 	{
-		
+		Main.timePassed += elapsed;
 		FlxG.collide(collideWithMap, tileMap);
 		FlxG.collide(collideWithMap, platforms);
 		FlxG.overlap(bullets, overlapWithBullets, bulletOverlap);
@@ -132,17 +143,13 @@ class PlayState extends FlxState
 		super.update(elapsed);
 	}
 	
-	private function bulletOverlap(bullet:FlxObject, enemy:FlxObject):Void
+	private function bulletOverlap(bullet:FlxObject, enemy:Enemy):Void
 	{
-		enemy.velocity.x  += bullet.velocity.x  * ForBahri.crabKnockbackResistanceX;
+		//enemy.velocity.x  += bullet.velocity.x  * ForBahri.crabKnockbackResistanceX;
 		//enemy.velocity.y  = bullet.velocity.y * ForBahri.crabKnockbackResistanceY;
 		
-		enemy.hurt(bullet.health);
-		if (enemy.health <= 0){
-			crabGibs.focusOn(enemy);
-			crabGibs.velocity.set(bullet.velocity.x/5-100, bullet.velocity.y/5-100, bullet.velocity.x/5+100, bullet.velocity.y/5+100);
-			crabGibs.start(true, 0, 12);
-		}
+		//enemy.hurt(bullet.health);
+		enemy.getHit(bullet);
 		bullet.kill();
 	}
 }

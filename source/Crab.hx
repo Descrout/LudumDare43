@@ -12,24 +12,24 @@ import flixel.util.FlxSpriteUtil;
  * ...
  * @author Adil Basar
  */
-class Crab extends FlxSprite
+class Crab extends Enemy
 {
-	private var brain:FSM;
+	
 	private var player:Player;
-	private var speed:Int;
 	private var jumpSpeed:Int;
 	private var changeTime:Float;
-	private var timer:Float;
+
 	private var direction:Int;
-	private var damage:Float;
+	
+	private var gibs:FlxEmitter;
 	private var tileMap:FlxTilemap;
+	
 	private var knockback:Int;
-	public var rageAmount:Int;
 	private var attackRange:Int;
 	
 	private var touchingDown:Bool;
 	private var touchingWall:Bool;
-	private var gibs:FlxEmitter;
+	
 	
 	public function new(X:Int, Y:Int, P:Player, TileMap:FlxTilemap, Gibs:FlxEmitter) 
 	{
@@ -58,6 +58,7 @@ class Crab extends FlxSprite
 		acceleration.y = ForBahri.crabGravity;
 		damage = ForBahri.crabDamage;
 		knockback = ForBahri.crabKnockback;
+		knockbackRes = ForBahri.crabKnockbackResistance;
 		drag.x = speed * 4;
 		player = P;
 		tileMap = TileMap;
@@ -132,9 +133,13 @@ class Crab extends FlxSprite
 	
 	override public function kill():Void{
 		player.rage += rageAmount;
-		FlxG.camera.shake(0.007, 0.25);
-		FlxG.camera.flash(0xffd8eba2, 0.2, turnOffSlowMo);
-		FlxG.timeScale = 0.35;
+		//FlxG.camera.shake(0.007, 0.25);
+		//FlxG.camera.flash(0xffd8eba2, 0.2, turnOffSlowMo);
+		//FlxG.timeScale = 0.35;
+		
+		gibs.focusOn(this);
+		gibs.velocity.set(hitObj.velocity.x/5-100, hitObj.velocity.y/5-100, hitObj.velocity.x/5+100, hitObj.velocity.y/5+100);
+		gibs.start(true, 0, 12);
 		super.kill();
 	}
 	
@@ -210,6 +215,8 @@ class Crab extends FlxSprite
 
 		if (brain.activeState == chase)
 			timer = 0;
+			
+		velocity.x  += hitObj.velocity.x * knockbackRes;
 		super.hurt(dmg);		
 	}
 	
@@ -243,7 +250,7 @@ class Crab extends FlxSprite
 		
 		handleAnim();
 		
-		//trace(velocity.x);
+
 		super.update(elapsed);
 		acceleration.x = 0;	
 	}

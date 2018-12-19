@@ -35,8 +35,14 @@ class ForBahri
 	public static inline var crabDamage = 20;
 	public static inline var crabKnockback = 300;
 	public static inline var crabRageAmount = 5;
-	public static inline var crabKnockbackResistanceX = 0.2;
+	public static inline var crabKnockbackResistance = 0.2;
 	public static inline var crabAttackRangeMax = 120;
 	public static inline var crabAttackRangeMin = 90;
+	
+	public static inline var rockyHP = 3;
+	public static inline var rockyRage = 5;
+	public static inline var rockyMoveOffset = 60;
+	public static inline var rockyIdleSpeed = 5;
+	public static inline var rockyTriggerRange =  200;
 
 }

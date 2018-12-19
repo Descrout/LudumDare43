@@ -11,6 +11,8 @@ class Main extends Sprite
 	
 	public static var maxLevel:Int = 1;
 	
+	public static var timePassed:Float = 0;
+	
 	public function new()
 	{
 		super();
