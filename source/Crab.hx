@@ -69,8 +69,8 @@ class Crab extends Enemy
 	{
 		acceleration.x += speed  * direction;
 		if (touchingDown){
-			if(velocity.x > speed) velocity.x = speed;
-			else if (velocity.x < -speed) velocity.x = -speed;
+			if(velocity.x > 180) velocity.x = 180;
+			else if (velocity.x < -180) velocity.x = -180;
 		}
 	}
 	

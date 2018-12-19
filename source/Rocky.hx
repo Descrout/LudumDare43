@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.effects.particles.FlxEmitter;
 import flixel.tile.FlxTilemap;
 import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
 import flixel.util.FlxSpriteUtil;
 /**
  * ...
@@ -43,7 +44,9 @@ class Rocky extends Enemy
 		health = ForBahri.rockyHP;
 		rageAmount = ForBahri.rockyRage;
 		speed = ForBahri.rockyIdleSpeed;
+		knockbackRes = ForBahri.rockyKnockbackResistance;
 		
+		drag.set(speed * 3, speed * 3);
 		angle = -40;
 		randomMove = FlxG.random.float(2, 3);		
 		getRandomPos();
@@ -54,17 +57,49 @@ class Rocky extends Enemy
 		if(timer<=0){
 			getRandomPos();
 		}
-		
-		/*if(FlxMath.distanceBetween(this, player) < ForBahri.rockyTriggerRange){
+		goToPos();
+		if(FlxMath.distanceBetween(this, player) < ForBahri.rockyTriggerRange){
 			if (tileMap.ray(getMidpoint(), player.getMidpoint())){
 				brain.activeState = chase;
 			}
-		}*/
+		}
+	}
+	
+	private function getReadyForAttack():Void
+	{
+		if(timer<0){
+			brain.activeState = attack;
+			timer = 2;
+			
+			/*
+			var Angle:Float = getMidpoint().angleBetween(player.getMidpoint());
+			_point.set(0, -800);
+			_point.rotate(FlxPoint.weak(0, 0), Angle);
+			velocity.x = _point.x;
+			velocity.y = _point.y;*/
+			
+
+		}
+		
+	}
+	
+	private function attack():Void
+	{
+		if(timer>0.5){
+			acceleration.x += ((player.x > x) ? 1 : -1) * speed *2;
+			acceleration.y += ((player.y > y) ? 1 : -1) * speed*2;
+		}else if (timer < 0) brain.activeState = chase;
 	}
 	
 	private function chase():Void
 	{
+		acceleration.x += ((player.x > x) ? 1 : -1) * speed;
+		acceleration.y += ((player.y > y) ? 1 : -1) * speed;
 		
+		if(FlxMath.distanceBetween(this, player) < ForBahri.rockyTriggerRange){
+			brain.activeState = getReadyForAttack;
+			timer = 1;
+		}
 	}
 	
 	private function getRandomPos():Void
@@ -95,15 +130,19 @@ class Rocky extends Enemy
 	override public function hurt(dmg:Float):Void
 	{
 		FlxSpriteUtil.flicker(this, 0.4, 0.02, true);
+		velocity.x  += hitObj.velocity.x * knockbackRes;
+		velocity.y  += hitObj.velocity.y * knockbackRes;
 		super.hurt(dmg);
 	}
 	
 	override public function update(elapsed:Float):Void
 	{
 		timer -= elapsed;
+		
 		angle += (Math.sin(Main.timePassed*randomMove) * 2); 
-		goToPos();
+		
 		brain.update();
 		super.update(elapsed);
+		acceleration.set(0, 0);
 	}
 }

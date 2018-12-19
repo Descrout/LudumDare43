@@ -2,7 +2,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <OgmoVersion>2.1.0.6</OgmoVersion>
   <Name>ludumdare43</Name>
-  <BackgroundColor A="255" R="125" G="160" B="255" />
+  <BackgroundColor A="255" R="0" G="26" B="91" />
   <GridColor A="255" R="255" G="240" B="90" />
   <LevelDefaultSize>
     <Width>2048</Width>
@@ -71,7 +71,7 @@
         <X>0</X>
         <Y>0</Y>
       </Origin>
-      <ImageDefinition DrawMode="Image" ImagePath="assets\images\player.png" Tiled="true">
+      <ImageDefinition DrawMode="Image" ImagePath="assets\images\player_sprites.png" Tiled="true">
         <RectColor A="255" R="255" G="0" B="0" />
       </ImageDefinition>
       <ValueDefinitions />

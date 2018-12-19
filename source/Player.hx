@@ -38,6 +38,7 @@ class Player extends FlxSprite
 	
 	public var rifle:FlxSprite;
 	public var pistol:FlxSprite;
+	public var head:FlxSprite;
 
 	private var hpBar:FlxBar;
 	private var rageBar:FlxBar;
@@ -50,7 +51,7 @@ class Player extends FlxSprite
 	{
 		super();
 		
-		loadGraphic(AssetPaths.player_sprites__png, true , 64,64);
+		loadGraphic(AssetPaths.player_body_sprites__png, true , 34,34);
 
 		animation.add("idle", [14], 1, false);
 		animation.add("goUp", [12], 1, false);
@@ -64,7 +65,8 @@ class Player extends FlxSprite
 		rage = 0;
 		
 		setSize(20, 48);
-		offset.set(20, 16);
+		offset.set(5, -14);
+		//offset.set(20, 16);
 		
 		maxVelocity.set(ForBahri.playerMaxVelX, ForBahri.playerMaxVelY);
     	
@@ -95,6 +97,11 @@ class Player extends FlxSprite
 		pistol.loadGraphic(AssetPaths.pistol__png, false, 27, 16);
 		pistol.origin.set(10, 8);
 		pistol.visible = false;
+		
+		head = new FlxSprite();
+		head.loadGraphic(AssetPaths.player_head_sprites__png, true, 34, 34);
+		head.animation.add("idle", [0], 1, false);
+		head.animation.play("idle");
 		
 		FlxG.camera.follow(this, LOCKON, 0.1);
 		
@@ -179,6 +186,9 @@ class Player extends FlxSprite
 		pistol.x = this.x;
 		pistol.y = this.y + 20;
 		pistol.angle = mouseAng - 90;
+		
+		head.x = this.x;
+		head.y = this.y;
 		
 		if (mp.x > this.x) pistol.flipY = false;
 		else pistol.flipY = true;

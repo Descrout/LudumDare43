@@ -42,7 +42,8 @@ class ForBahri
 	public static inline var rockyHP = 3;
 	public static inline var rockyRage = 5;
 	public static inline var rockyMoveOffset = 60;
-	public static inline var rockyIdleSpeed = 5;
+	public static inline var rockyIdleSpeed = 200;
 	public static inline var rockyTriggerRange =  200;
+	public static inline var rockyKnockbackResistance = 0.2;
 
 }
