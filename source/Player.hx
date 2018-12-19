@@ -92,6 +92,7 @@ class Player extends FlxSprite
 		rifle = new FlxSprite();
 		rifle.loadGraphic(AssetPaths.rifle__png, false, 37, 18);
 		rifle.origin.set(10, 9);
+
 		
 		pistol = new FlxSprite();
 		pistol.loadGraphic(AssetPaths.pistol__png, false, 27, 16);
@@ -100,7 +101,10 @@ class Player extends FlxSprite
 		
 		head = new FlxSprite();
 		head.loadGraphic(AssetPaths.player_head_sprites__png, true, 34, 34);
-		head.animation.add("idle", [0], 1, false);
+		head.origin.y = 30;
+		head.animation.add("idle", [2], 1, false);
+		head.animation.add("down", [1], 1, false);
+		head.animation.add("up", [0], 1, false);
 		head.animation.play("idle");
 		
 		FlxG.camera.follow(this, LOCKON, 0.1);
@@ -131,11 +135,17 @@ class Player extends FlxSprite
 	private function handleAnimation():Void
 	{
     	if (canJump){
+			head.animation.play("idle");
 			animation.play("walk");
     		if (velocity.x >-10 && velocity.x < 10) animation.play("idle");
     	}else{
-    		if (velocity.y < 0) animation.play("goUp");
-			else animation.play("goDown");
+    		if (velocity.y < 0){
+				animation.play("goUp");
+				head.animation.play("up");
+			}else{
+				animation.play("goDown");
+				head.animation.play("down");
+			}
     	}
     }
 	
@@ -176,22 +186,40 @@ class Player extends FlxSprite
 		
 		var mp:FlxPoint = FlxG.mouse.getPosition();
 		mouseAng = getMidpoint(_point).angleBetween(mp);
-		rifle.x = this.x;
+		
+
+		rifle.x = this.x + 3;
 		rifle.y = this.y + 20;
 		rifle.angle = mouseAng - 90;
 		
-		if (mp.x > this.x) rifle.flipY = false;
-		else rifle.flipY = true;
-		
-		pistol.x = this.x;
+		pistol.x = this.x + 3;
 		pistol.y = this.y + 20;
 		pistol.angle = mouseAng - 90;
 		
-		head.x = this.x;
-		head.y = this.y;
+		head.x = this.x-6;
+		head.y = this.y - 5;
+		head.update(0.016);
+		head.angle = mouseAng - 90;
+
+		if (mp.x > this.x){
+			pistol.flipY = false;
+			rifle.flipY = false;
+			head.flipY = false;
+			head.offset.y = 0;
+			head.origin.y = 29;
+			if (head.angle < -60) head.angle = -60;
+			if (head.angle > 60) head.angle = 60;
+		}else{
+			pistol.flipY = true;
+			rifle.flipY = true;
+			head.flipY = true;
+			head.offset.y = -25;
+			head.origin.y = 5;
+			if (head.angle > -120) head.angle = -120;
+			if (head.angle < -230) head.angle = -230;
+		}
 		
-		if (mp.x > this.x) pistol.flipY = false;
-		else pistol.flipY = true;
+		
 	}
 	
 	private function stairHandle():Void

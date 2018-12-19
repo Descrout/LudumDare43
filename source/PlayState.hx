@@ -98,9 +98,9 @@ class PlayState extends FlxState
 		
 		player = new Player(this);
 		add(player);
+		add(player.head);
 		add(player.rifle);
 		add(player.pistol);
-		add(player.head);
 		add(bullets);
 
 		cages = new FlxTypedGroup<BirdCage>();
