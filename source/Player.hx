@@ -196,9 +196,8 @@ class Player extends FlxSprite
 		pistol.y = this.y + 20;
 		pistol.angle = mouseAng - 90;
 		
-		head.x = this.x-6;
-		head.y = this.y - 5;
-		head.update(0.016);
+		head.x = this.x - 6 + (velocity.x * 0.01);
+		head.y = this.y - 5 + (velocity.y * 0.01);
 		head.angle = mouseAng - 90;
 
 		if (mp.x > this.x){
